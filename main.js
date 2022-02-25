@@ -1,7 +1,5 @@
 import * as THREE from 'three';
-import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
-
-
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 // Scene == container
 const scene = new THREE.Scene();
@@ -16,7 +14,6 @@ const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerH
 const renderer = new THREE.WebGLRenderer({
   // Rendering the canvas background
   canvas: document.querySelector('#bg'),
-
 });
 
 renderer.setPixelRatio(window.devicePixelRatio);
@@ -35,14 +32,14 @@ renderer.render(scene, camera);
  * Mesh = Geometry + material
  */
 const geometry = new THREE.TorusGeometry(10, 1, 8, 100);
-const material = new THREE.MeshStandardMaterial({ color: 0xFF6347})
+const material = new THREE.MeshStandardMaterial({ color: 0xff6347 });
 const torus = new THREE.Mesh(geometry, material);
 
 scene.add(torus);
 
 //Lighting up the Torus
 const pointLight = new THREE.PointLight(0xffffff);
-pointLight.position.set(5,5,5);
+pointLight.position.set(5, 5, 5);
 const ambientLight = new THREE.AmbientLight(0xffffff);
 
 scene.add(pointLight, ambientLight);
@@ -61,41 +58,38 @@ function addStar() {
   const star = new THREE.Mesh(geometry, material);
 
   // Randomly placing the stars by means of randFloatSpread function
-  const [x, y, z] = Array(3).fill().map(() => THREE.MathUtils.randFloatSpread(100));
+  const [x, y, z] = Array(3)
+    .fill()
+    .map(() => THREE.MathUtils.randFloatSpread(100));
   star.position.set(x, y, z);
   scene.add(star);
 }
 
 Array(300).fill().forEach(addStar);
 
-const spaceTexture = new THREE.TextureLoader().load('/images/space.jpg');
+const spaceTexture = new THREE.TextureLoader().load('images/space.jpg');
 scene.background = spaceTexture;
 
-
 // Avatar
-const katelynTexture = new THREE.TextureLoader().load('/images/meblue.jpg');
-const katelyn = new THREE.Mesh(
-  new THREE.BoxGeometry(3,3,3),
-  new THREE.MeshBasicMaterial({ map: katelynTexture })
-);
+const katelynTexture = new THREE.TextureLoader().load('images/meblue.jpg');
+const katelyn = new THREE.Mesh(new THREE.BoxGeometry(3, 3, 3), new THREE.MeshBasicMaterial({ map: katelynTexture }));
 
 scene.add(katelyn);
 
-// Moon 
-const moonTexture = new THREE.TextureLoader().load('/images/moon.jpg');
+// Moon
+const moonTexture = new THREE.TextureLoader().load('images/moon.jpg');
 
 // A normal map provides depth
-const normalTexture = new THREE.TextureLoader().load('/images/normal.jpg')
+const normalTexture = new THREE.TextureLoader().load('images/normal.jpg');
 
 const moon = new THREE.Mesh(
-  new THREE.SphereGeometry(3,32,32),
-  new THREE.MeshStandardMaterial({ 
+  new THREE.SphereGeometry(3, 32, 32),
+  new THREE.MeshStandardMaterial({
     map: moonTexture,
-    normalMap: normalTexture
+    normalMap: normalTexture,
   })
-)
+);
 scene.add(moon);
-
 
 // Both .z and .setX do the same thing
 moon.position.z = 30;
@@ -116,13 +110,10 @@ function moveCamera() {
   camera.position.z = t * -0.01;
   camera.position.x = t * -0.0002;
   camera.position.y = t * -0.0002;
- 
-
 }
 
 document.body.onscroll = moveCamera;
 moveCamera();
-
 
 // Recursive function to continuously render
 function animate() {
